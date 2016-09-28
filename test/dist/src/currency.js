@@ -1,21 +1,28 @@
-// import { baseCurName, rates } from './rates';
 "use strict";
+var rates_1 = require('./rates');
 var Converter = (function () {
     function Converter(curRate) {
-        this.rate = curRate;
+        this.curr = curRate;
     }
     ;
     Converter.prototype.convert = function (amount) {
-        return (this.rate * amount);
+        var _this = this;
+        return rates_1.rates.filter(function (e) { return e.curName === _this.curr; })
+            .map(function (e) { return e.inBaseCur * amount; })
+            .reduce(function (v) { return v; });
     };
     ;
     Converter.prototype.convertBack = function (amount) {
-        return (amount / this.rate);
+        var _this = this;
+        return rates_1.rates.filter(function (e) { return e.curName === _this.curr; })
+            .map(function (e) { return amount / e.inBaseCur; })
+            .reduce(function (v) { return v; });
     };
+    ;
     return Converter;
 }());
 exports.Converter = Converter;
-// const usdToEurConvert = new Converter(0.5);
-// console.log(usdToEurConvert.convert(46));
-// console.log(usdToEurConvert.convertBack(23));
+var usdToEurConvert = new Converter('AUD');
+console.log(usdToEurConvert.convert(46));
+console.log(usdToEurConvert.convertBack(30.5532));
 //# sourceMappingURL=currency.js.map
