@@ -1,3 +1,5 @@
+# The Currency Converter App
+
 To use this app, run the following on the command line: **npm run build**
 
 To run the tests, run the following command: **npm test**

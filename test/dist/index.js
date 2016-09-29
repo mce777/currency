@@ -13,58 +13,61 @@ var modules = [
     },
     function _1(module, exports) {
         'use strict';
-        var currency_1 = __paeckchen_require__(2).exports;
+        var currency2_1 = __paeckchen_require__(2).exports;
         var chai_1 = __paeckchen_require__(3).exports;
-        describe('Testing the new and improved Currency Converter', function () {
-            it('should convert correctly', function () {
-                var ctest = new currency_1.Converter('AUD');
-                var ctestResult = ctest.convert(46);
-                chai_1.assert.equal(ctestResult, '30.5532', 'Did not convert correctly');
+        describe('Testing of the Currency Converter', function () {
+            describe('convert() function', function () {
+                it('should convert correctly', function () {
+                    var ctest = new currency2_1.Converter(0.6642);
+                    var ctestResult = ctest.convert(46);
+                    chai_1.assert.equal(ctestResult, '30.5532', 'Did not convert correctly');
+                });
+                it('should not except values < 0', function () {
+                    var ctest = new currency2_1.Converter(0.6642);
+                    chai_1.assert.throws(function () {
+                        return ctest.convert(-10);
+                    }, 'Negative values are not permitted');
+                });
             });
-            it('should convert back to original currency', function () {
-                var cbtest = new currency_1.Converter('USD');
-                var cbtestResult = cbtest.convert(45);
-                var convertBackResult = cbtest.convertBack(cbtestResult);
-                chai_1.assert.equal(convertBackResult, '46', 'Did not convert back correctly');
+            describe('convertBack() function', function () {
+                it('should convert back to original currency', function () {
+                    var cbtest = new currency2_1.Converter(0.8903);
+                    var cbtestResult = cbtest.convert(45);
+                    var convertBackResult = cbtest.convertBack(cbtestResult);
+                    chai_1.assert.equal(convertBackResult, '45', 'Did not convert back correctly');
+                });
+                it('should not except values < 0', function () {
+                    var cbtest = new currency2_1.Converter(0.8903);
+                    chai_1.assert.throws(function () {
+                        return cbtest.convertBack(-10);
+                    }, 'Negative values are not permitted');
+                });
             });
         });
     },
     function _2(module, exports) {
         'use strict';
-        var rates_1 = __paeckchen_require__(5).exports;
         var Converter = function () {
-            function Converter(curRate) {
-                this.curr = curRate;
+            function Converter(currencyRate) {
+                this.rate = currencyRate;
             }
             ;
-            Converter.prototype.convert = function (amount) {
-                var _this = this;
-                return rates_1.rates.filter(function (e) {
-                    return e.curName === _this.curr;
-                }).map(function (e) {
-                    return e.inBaseCur * amount;
-                }).reduce(function (v) {
-                    return v;
-                });
+            Converter.prototype.convert = function (amountToConvert) {
+                if (amountToConvert < 0) {
+                    throw new Error('Negative values are not permitted');
+                }
+                return this.rate * amountToConvert;
             };
             ;
-            Converter.prototype.convertBack = function (amount) {
-                var _this = this;
-                return rates_1.rates.filter(function (e) {
-                    return e.curName === _this.curr;
-                }).map(function (e) {
-                    return amount / e.inBaseCur;
-                }).reduce(function (v) {
-                    return v;
-                });
+            Converter.prototype.convertBack = function (amountToConvert) {
+                if (amountToConvert < 0) {
+                    throw new Error('Negative values are not permitted');
+                }
+                return amountToConvert / this.rate;
             };
-            ;
             return Converter;
         }();
         exports.Converter = Converter;
-        var usdToEurConvert = new Converter('AUD');
-        console.log(usdToEurConvert.convert(46));
-        console.log(usdToEurConvert.convertBack(30.5532));
     },
     function _3(module, exports) {
         module.exports = __paeckchen_require__(4).exports;
@@ -72,8 +75,8 @@ var modules = [
     function _4(module, exports) {
         var used = [], exports = module.exports = {};
         exports.version = '3.5.0';
-        exports.AssertionError = __paeckchen_require__(12).exports;
-        var util = __paeckchen_require__(13).exports;
+        exports.AssertionError = __paeckchen_require__(11).exports;
+        var util = __paeckchen_require__(12).exports;
         exports.use = function (fn) {
             if (!~used.indexOf(fn)) {
                 fn(this, util);
@@ -82,54 +85,28 @@ var modules = [
             return this;
         };
         exports.util = util;
-        var config = __paeckchen_require__(6).exports;
+        var config = __paeckchen_require__(5).exports;
         exports.config = config;
-        var assertion = __paeckchen_require__(7).exports;
+        var assertion = __paeckchen_require__(6).exports;
         exports.use(assertion);
-        var core = __paeckchen_require__(8).exports;
+        var core = __paeckchen_require__(9).exports;
         exports.use(core);
-        var expect = __paeckchen_require__(9).exports;
+        var expect = __paeckchen_require__(7).exports;
         exports.use(expect);
-        var should = __paeckchen_require__(10).exports;
+        var should = __paeckchen_require__(8).exports;
         exports.use(should);
-        var assert = __paeckchen_require__(11).exports;
+        var assert = __paeckchen_require__(10).exports;
         exports.use(assert);
     },
     function _5(module, exports) {
-        'use strict';
-        exports.baseCurName = 'EUR';
-        exports.rates = [
-            {
-                curName: 'EUR',
-                inBaseCur: 1
-            },
-            {
-                curName: 'GBP',
-                inBaseCur: 1.1702
-            },
-            {
-                curName: 'HKD',
-                inBaseCur: 0.1148
-            },
-            {
-                curName: 'USD',
-                inBaseCur: 0.8903
-            },
-            {
-                curName: 'AUD',
-                inBaseCur: 0.6642
-            }
-        ];
-    },
-    function _6(module, exports) {
         module.exports = {
             includeStack: false,
             showDiff: true,
             truncateThreshold: 40
         };
     },
-    function _7(module, exports) {
-        var config = __paeckchen_require__(6).exports;
+    function _6(module, exports) {
+        var config = __paeckchen_require__(5).exports;
         module.exports = function (_chai, util) {
             var AssertionError = _chai.AssertionError, flag = util.flag;
             _chai.Assertion = Assertion;
@@ -201,7 +178,82 @@ var modules = [
             });
         };
     },
+    function _7(module, exports) {
+        module.exports = function (chai, util) {
+            chai.expect = function (val, message) {
+                return new chai.Assertion(val, message);
+            };
+            chai.expect.fail = function (actual, expected, message, operator) {
+                message = message || 'expect.fail()';
+                throw new chai.AssertionError(message, {
+                    actual: actual,
+                    expected: expected,
+                    operator: operator
+                }, chai.expect.fail);
+            };
+        };
+    },
     function _8(module, exports) {
+        module.exports = function (chai, util) {
+            var Assertion = chai.Assertion;
+            function loadShould() {
+                function shouldGetter() {
+                    if (this instanceof String || this instanceof Number || this instanceof Boolean) {
+                        return new Assertion(this.valueOf(), null, shouldGetter);
+                    }
+                    return new Assertion(this, null, shouldGetter);
+                }
+                function shouldSetter(value) {
+                    Object.defineProperty(this, 'should', {
+                        value: value,
+                        enumerable: true,
+                        configurable: true,
+                        writable: true
+                    });
+                }
+                Object.defineProperty(Object.prototype, 'should', {
+                    set: shouldSetter,
+                    get: shouldGetter,
+                    configurable: true
+                });
+                var should = {};
+                should.fail = function (actual, expected, message, operator) {
+                    message = message || 'should.fail()';
+                    throw new chai.AssertionError(message, {
+                        actual: actual,
+                        expected: expected,
+                        operator: operator
+                    }, should.fail);
+                };
+                should.equal = function (val1, val2, msg) {
+                    new Assertion(val1, msg).to.equal(val2);
+                };
+                should.Throw = function (fn, errt, errs, msg) {
+                    new Assertion(fn, msg).to.Throw(errt, errs);
+                };
+                should.exist = function (val, msg) {
+                    new Assertion(val, msg).to.exist;
+                };
+                should.not = {};
+                should.not.equal = function (val1, val2, msg) {
+                    new Assertion(val1, msg).to.not.equal(val2);
+                };
+                should.not.Throw = function (fn, errt, errs, msg) {
+                    new Assertion(fn, msg).to.not.Throw(errt, errs);
+                };
+                should.not.exist = function (val, msg) {
+                    new Assertion(val, msg).to.not.exist;
+                };
+                should['throw'] = should['Throw'];
+                should.not['throw'] = should.not['Throw'];
+                return should;
+            }
+            ;
+            chai.should = loadShould;
+            chai.Should = loadShould;
+        };
+    },
+    function _9(module, exports) {
         module.exports = function (chai, _) {
             var Assertion = chai.Assertion, toString = Object.prototype.toString, flag = _.flag;
             [
@@ -754,82 +806,7 @@ var modules = [
             });
         };
     },
-    function _9(module, exports) {
-        module.exports = function (chai, util) {
-            chai.expect = function (val, message) {
-                return new chai.Assertion(val, message);
-            };
-            chai.expect.fail = function (actual, expected, message, operator) {
-                message = message || 'expect.fail()';
-                throw new chai.AssertionError(message, {
-                    actual: actual,
-                    expected: expected,
-                    operator: operator
-                }, chai.expect.fail);
-            };
-        };
-    },
     function _10(module, exports) {
-        module.exports = function (chai, util) {
-            var Assertion = chai.Assertion;
-            function loadShould() {
-                function shouldGetter() {
-                    if (this instanceof String || this instanceof Number || this instanceof Boolean) {
-                        return new Assertion(this.valueOf(), null, shouldGetter);
-                    }
-                    return new Assertion(this, null, shouldGetter);
-                }
-                function shouldSetter(value) {
-                    Object.defineProperty(this, 'should', {
-                        value: value,
-                        enumerable: true,
-                        configurable: true,
-                        writable: true
-                    });
-                }
-                Object.defineProperty(Object.prototype, 'should', {
-                    set: shouldSetter,
-                    get: shouldGetter,
-                    configurable: true
-                });
-                var should = {};
-                should.fail = function (actual, expected, message, operator) {
-                    message = message || 'should.fail()';
-                    throw new chai.AssertionError(message, {
-                        actual: actual,
-                        expected: expected,
-                        operator: operator
-                    }, should.fail);
-                };
-                should.equal = function (val1, val2, msg) {
-                    new Assertion(val1, msg).to.equal(val2);
-                };
-                should.Throw = function (fn, errt, errs, msg) {
-                    new Assertion(fn, msg).to.Throw(errt, errs);
-                };
-                should.exist = function (val, msg) {
-                    new Assertion(val, msg).to.exist;
-                };
-                should.not = {};
-                should.not.equal = function (val1, val2, msg) {
-                    new Assertion(val1, msg).to.not.equal(val2);
-                };
-                should.not.Throw = function (fn, errt, errs, msg) {
-                    new Assertion(fn, msg).to.not.Throw(errt, errs);
-                };
-                should.not.exist = function (val, msg) {
-                    new Assertion(val, msg).to.not.exist;
-                };
-                should['throw'] = should['Throw'];
-                should.not['throw'] = should.not['Throw'];
-                return should;
-            }
-            ;
-            chai.should = loadShould;
-            chai.Should = loadShould;
-        };
-    },
-    function _11(module, exports) {
         module.exports = function (chai, util) {
             var Assertion = chai.Assertion, flag = util.flag;
             var assert = chai.assert = function (express, errmsg) {
@@ -1115,7 +1092,7 @@ var modules = [
             }('isOk', 'ok')('isNotOk', 'notOk')('throws', 'throw')('throws', 'Throw')('isExtensible', 'extensible')('isNotExtensible', 'notExtensible')('isSealed', 'sealed')('isNotSealed', 'notSealed')('isFrozen', 'frozen')('isNotFrozen', 'notFrozen'));
         };
     },
-    function _12(module, exports) {
+    function _11(module, exports) {
         function exclude() {
             var excludes = [].slice.call(arguments);
             function excludeProps(res, obj) {
@@ -1163,40 +1140,40 @@ var modules = [
             return props;
         };
     },
-    function _13(module, exports) {
+    function _12(module, exports) {
         var exports = module.exports = {};
-        exports.test = __paeckchen_require__(14).exports;
-        exports.type = __paeckchen_require__(32).exports;
-        exports.expectTypes = __paeckchen_require__(15).exports;
-        exports.getMessage = __paeckchen_require__(16).exports;
-        exports.getActual = __paeckchen_require__(17).exports;
-        exports.inspect = __paeckchen_require__(18).exports;
-        exports.objDisplay = __paeckchen_require__(19).exports;
-        exports.flag = __paeckchen_require__(20).exports;
+        exports.test = __paeckchen_require__(13).exports;
+        exports.type = __paeckchen_require__(31).exports;
+        exports.expectTypes = __paeckchen_require__(14).exports;
+        exports.getMessage = __paeckchen_require__(15).exports;
+        exports.getActual = __paeckchen_require__(16).exports;
+        exports.inspect = __paeckchen_require__(17).exports;
+        exports.objDisplay = __paeckchen_require__(18).exports;
+        exports.flag = __paeckchen_require__(19).exports;
         exports.transferFlags = __paeckchen_require__(21).exports;
-        exports.eql = __paeckchen_require__(33).exports;
-        exports.getPathValue = __paeckchen_require__(23).exports;
-        exports.getPathInfo = __paeckchen_require__(22).exports;
-        exports.hasProperty = __paeckchen_require__(24).exports;
+        exports.eql = __paeckchen_require__(32).exports;
+        exports.getPathValue = __paeckchen_require__(20).exports;
+        exports.getPathInfo = __paeckchen_require__(23).exports;
+        exports.hasProperty = __paeckchen_require__(22).exports;
         exports.getName = __paeckchen_require__(25).exports;
-        exports.addProperty = __paeckchen_require__(26).exports;
-        exports.addMethod = __paeckchen_require__(27).exports;
-        exports.overwriteProperty = __paeckchen_require__(28).exports;
-        exports.overwriteMethod = __paeckchen_require__(30).exports;
+        exports.addProperty = __paeckchen_require__(24).exports;
+        exports.addMethod = __paeckchen_require__(26).exports;
+        exports.overwriteProperty = __paeckchen_require__(27).exports;
+        exports.overwriteMethod = __paeckchen_require__(28).exports;
         exports.addChainableMethod = __paeckchen_require__(29).exports;
-        exports.overwriteChainableMethod = __paeckchen_require__(31).exports;
+        exports.overwriteChainableMethod = __paeckchen_require__(30).exports;
     },
-    function _14(module, exports) {
-        var flag = __paeckchen_require__(20).exports;
+    function _13(module, exports) {
+        var flag = __paeckchen_require__(19).exports;
         module.exports = function (obj, args) {
             var negate = flag(obj, 'negate'), expr = args[0];
             return negate ? !expr : expr;
         };
     },
-    function _15(module, exports) {
-        var AssertionError = __paeckchen_require__(12).exports;
-        var flag = __paeckchen_require__(20).exports;
-        var type = __paeckchen_require__(32).exports;
+    function _14(module, exports) {
+        var AssertionError = __paeckchen_require__(11).exports;
+        var flag = __paeckchen_require__(19).exports;
+        var type = __paeckchen_require__(31).exports;
         module.exports = function (obj, types) {
             var obj = flag(obj, 'object');
             types = types.map(function (t) {
@@ -1221,8 +1198,8 @@ var modules = [
             }
         };
     },
-    function _16(module, exports) {
-        var flag = __paeckchen_require__(20).exports, getActual = __paeckchen_require__(17).exports, inspect = __paeckchen_require__(18).exports, objDisplay = __paeckchen_require__(19).exports;
+    function _15(module, exports) {
+        var flag = __paeckchen_require__(19).exports, getActual = __paeckchen_require__(16).exports, inspect = __paeckchen_require__(17).exports, objDisplay = __paeckchen_require__(18).exports;
         module.exports = function (obj, args) {
             var negate = flag(obj, 'negate'), val = flag(obj, 'object'), expected = args[3], actual = getActual(obj, args), msg = negate ? args[2] : args[1], flagMsg = flag(obj, 'message');
             if (typeof msg === 'function')
@@ -1238,15 +1215,15 @@ var modules = [
             return flagMsg ? flagMsg + ': ' + msg : msg;
         };
     },
-    function _17(module, exports) {
+    function _16(module, exports) {
         module.exports = function (obj, args) {
             return args.length > 4 ? args[4] : obj._obj;
         };
     },
-    function _18(module, exports) {
+    function _17(module, exports) {
         var getName = __paeckchen_require__(25).exports;
-        var getProperties = __paeckchen_require__(36).exports;
-        var getEnumerableProperties = __paeckchen_require__(37).exports;
+        var getProperties = __paeckchen_require__(35).exports;
+        var getEnumerableProperties = __paeckchen_require__(36).exports;
         module.exports = inspect;
         function inspect(obj, showHidden, depth, colors) {
             var ctx = {
@@ -1484,9 +1461,9 @@ var modules = [
             return Object.prototype.toString.call(o);
         }
     },
-    function _19(module, exports) {
-        var inspect = __paeckchen_require__(18).exports;
-        var config = __paeckchen_require__(6).exports;
+    function _18(module, exports) {
+        var inspect = __paeckchen_require__(17).exports;
+        var config = __paeckchen_require__(5).exports;
         module.exports = function (obj) {
             var str = inspect(obj), type = Object.prototype.toString.call(obj);
             if (config.truncateThreshold && str.length >= config.truncateThreshold) {
@@ -1505,7 +1482,7 @@ var modules = [
             }
         };
     },
-    function _20(module, exports) {
+    function _19(module, exports) {
         module.exports = function (obj, key, value) {
             var flags = obj.__flags || (obj.__flags = Object.create(null));
             if (arguments.length === 3) {
@@ -1513,6 +1490,13 @@ var modules = [
             } else {
                 return flags[key];
             }
+        };
+    },
+    function _20(module, exports) {
+        var getPathInfo = __paeckchen_require__(23).exports;
+        module.exports = function (path, obj) {
+            var info = getPathInfo(path, obj);
+            return info.value;
         };
     },
     function _21(module, exports) {
@@ -1530,7 +1514,22 @@ var modules = [
         };
     },
     function _22(module, exports) {
-        var hasProperty = __paeckchen_require__(24).exports;
+        var type = __paeckchen_require__(31).exports;
+        var literals = {
+            'number': Number,
+            'string': String
+        };
+        module.exports = function hasProperty(name, obj) {
+            var ot = type(obj);
+            if (ot === 'null' || ot === 'undefined')
+                return false;
+            if (literals[ot] && typeof obj !== 'object')
+                obj = new literals[ot](obj);
+            return name in obj;
+        };
+    },
+    function _23(module, exports) {
+        var hasProperty = __paeckchen_require__(22).exports;
         module.exports = function getPathInfo(path, obj) {
             var parsed = parsePath(path), last = parsed[parsed.length - 1];
             var info = {
@@ -1570,39 +1569,9 @@ var modules = [
             return res;
         }
     },
-    function _23(module, exports) {
-        var getPathInfo = __paeckchen_require__(22).exports;
-        module.exports = function (path, obj) {
-            var info = getPathInfo(path, obj);
-            return info.value;
-        };
-    },
     function _24(module, exports) {
-        var type = __paeckchen_require__(32).exports;
-        var literals = {
-            'number': Number,
-            'string': String
-        };
-        module.exports = function hasProperty(name, obj) {
-            var ot = type(obj);
-            if (ot === 'null' || ot === 'undefined')
-                return false;
-            if (literals[ot] && typeof obj !== 'object')
-                obj = new literals[ot](obj);
-            return name in obj;
-        };
-    },
-    function _25(module, exports) {
-        module.exports = function (func) {
-            if (func.name)
-                return func.name;
-            var match = /^\s?function ([^(]*)\(/.exec(func);
-            return match && match[1] ? match[1] : '';
-        };
-    },
-    function _26(module, exports) {
-        var config = __paeckchen_require__(6).exports;
-        var flag = __paeckchen_require__(20).exports;
+        var config = __paeckchen_require__(5).exports;
+        var flag = __paeckchen_require__(19).exports;
         module.exports = function (ctx, name, getter) {
             Object.defineProperty(ctx, name, {
                 get: function addProperty() {
@@ -1616,9 +1585,17 @@ var modules = [
             });
         };
     },
-    function _27(module, exports) {
-        var config = __paeckchen_require__(6).exports;
-        var flag = __paeckchen_require__(20).exports;
+    function _25(module, exports) {
+        module.exports = function (func) {
+            if (func.name)
+                return func.name;
+            var match = /^\s?function ([^(]*)\(/.exec(func);
+            return match && match[1] ? match[1] : '';
+        };
+    },
+    function _26(module, exports) {
+        var config = __paeckchen_require__(5).exports;
+        var flag = __paeckchen_require__(19).exports;
         module.exports = function (ctx, name, method) {
             ctx[name] = function () {
                 var old_ssfi = flag(this, 'ssfi');
@@ -1629,7 +1606,7 @@ var modules = [
             };
         };
     },
-    function _28(module, exports) {
+    function _27(module, exports) {
         module.exports = function (ctx, name, getter) {
             var _get = Object.getOwnPropertyDescriptor(ctx, name), _super = function () {
                 };
@@ -1644,10 +1621,23 @@ var modules = [
             });
         };
     },
+    function _28(module, exports) {
+        module.exports = function (ctx, name, method) {
+            var _method = ctx[name], _super = function () {
+                    return this;
+                };
+            if (_method && 'function' === typeof _method)
+                _super = _method;
+            ctx[name] = function () {
+                var result = method(_super).apply(this, arguments);
+                return result === undefined ? this : result;
+            };
+        };
+    },
     function _29(module, exports) {
         var transferFlags = __paeckchen_require__(21).exports;
-        var flag = __paeckchen_require__(20).exports;
-        var config = __paeckchen_require__(6).exports;
+        var flag = __paeckchen_require__(19).exports;
+        var config = __paeckchen_require__(5).exports;
         var hasProtoSupport = '__proto__' in Object;
         var excludeNames = /^(?:length|name|arguments|caller)$/;
         var call = Function.prototype.call, apply = Function.prototype.apply;
@@ -1695,19 +1685,6 @@ var modules = [
         };
     },
     function _30(module, exports) {
-        module.exports = function (ctx, name, method) {
-            var _method = ctx[name], _super = function () {
-                    return this;
-                };
-            if (_method && 'function' === typeof _method)
-                _super = _method;
-            ctx[name] = function () {
-                var result = method(_super).apply(this, arguments);
-                return result === undefined ? this : result;
-            };
-        };
-    },
-    function _31(module, exports) {
         module.exports = function (ctx, name, method, chainingBehavior) {
             var chainableBehavior = ctx.__methods[name];
             var _chainingBehavior = chainableBehavior.chainingBehavior;
@@ -1722,13 +1699,13 @@ var modules = [
             };
         };
     },
+    function _31(module, exports) {
+        module.exports = __paeckchen_require__(33).exports;
+    },
     function _32(module, exports) {
         module.exports = __paeckchen_require__(34).exports;
     },
     function _33(module, exports) {
-        module.exports = __paeckchen_require__(35).exports;
-    },
-    function _34(module, exports) {
         var exports = module.exports = getType;
         var objectTypeRegexp = /^\[object (.*)\]$/;
         function getType(obj) {
@@ -1767,11 +1744,11 @@ var modules = [
             }
         };
     },
-    function _35(module, exports) {
-        var type = __paeckchen_require__(39).exports;
+    function _34(module, exports) {
+        var type = __paeckchen_require__(38).exports;
         var Buffer;
         try {
-            Buffer = __paeckchen_require__(38).exports.Buffer;
+            Buffer = __paeckchen_require__(37).exports.Buffer;
         } catch (ex) {
             Buffer = {};
             Buffer.isBuffer = function () {
@@ -1892,7 +1869,7 @@ var modules = [
             return true;
         }
     },
-    function _36(module, exports) {
+    function _35(module, exports) {
         module.exports = function getProperties(object) {
             var result = Object.getOwnPropertyNames(object);
             function addProperty(property) {
@@ -1908,7 +1885,7 @@ var modules = [
             return result;
         };
     },
-    function _37(module, exports) {
+    function _36(module, exports) {
         module.exports = function getEnumerableProperties(object) {
             var result = [];
             for (var name in object) {
@@ -1917,11 +1894,11 @@ var modules = [
             return result;
         };
     },
-    function _38(module, exports) {
+    function _37(module, exports) {
         'use strict';
-        var base64 = __paeckchen_require__(41).exports;
-        var ieee754 = __paeckchen_require__(42).exports;
-        var isArray = __paeckchen_require__(43).exports;
+        var base64 = __paeckchen_require__(40).exports;
+        var ieee754 = __paeckchen_require__(41).exports;
+        var isArray = __paeckchen_require__(42).exports;
         exports.Buffer = Buffer;
         exports.SlowBuffer = SlowBuffer;
         exports.INSPECT_MAX_BYTES = 50;
@@ -3360,10 +3337,10 @@ var modules = [
             return val !== val;
         }
     },
-    function _39(module, exports) {
-        module.exports = __paeckchen_require__(40).exports;
+    function _38(module, exports) {
+        module.exports = __paeckchen_require__(39).exports;
     },
-    function _40(module, exports) {
+    function _39(module, exports) {
         var exports = module.exports = getType;
         var natives = {
             '[object Array]': 'array',
@@ -3408,7 +3385,7 @@ var modules = [
             }
         };
     },
-    function _41(module, exports) {
+    function _40(module, exports) {
         'use strict';
         exports.toByteArray = toByteArray;
         exports.fromByteArray = fromByteArray;
@@ -3489,7 +3466,7 @@ var modules = [
             return parts.join('');
         }
     },
-    function _42(module, exports) {
+    function _41(module, exports) {
         exports.read = function (buffer, offset, isLE, mLen, nBytes) {
             var e, m;
             var eLen = nBytes * 8 - mLen - 1;
@@ -3568,7 +3545,7 @@ var modules = [
             buffer[offset + i - d] |= s * 128;
         };
     },
-    function _43(module, exports) {
+    function _42(module, exports) {
         var toString = {}.toString;
         module.exports = Array.isArray || function (arr) {
             return toString.call(arr) == '[object Array]';
