@@ -1,8 +1,6 @@
 .DS_Store
 *.log
 node_modules
-lib
-es
-coverage
-_book
 .idea/
+/test/dist/
+/dist/

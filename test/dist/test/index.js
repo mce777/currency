@@ -2,5 +2,5 @@
 "use strict";
 // import './atest';
 // import './btest';
-require('./curr_test');
+require('./currencyTests');
 //# sourceMappingURL=index.js.map

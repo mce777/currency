@@ -1,5 +1,3 @@
-// import { baseCurName, rates } from './rates';
-
 export interface ICurrency {
 	convert(amountToConvert: number): number;
 	convertBack(amountToConvert: number): number;

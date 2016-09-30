@@ -1,13 +1,13 @@
-import { Converter } from '../src/currency2';
+import { Converter } from '../src/currency';
 import { assert } from 'chai';
 
 describe('Testing of the Currency Converter', () => {
-	describe('convert() function', () => {
+	describe('convert()', () => {
 		it('should convert correctly', () => {
 			const ctest = new Converter(0.6642);
 			const ctestResult = ctest.convert(46);
 
-			assert.equal(ctestResult, '30.5532', 'Did not convert correctly');
+			assert.strictEqual(ctestResult, 30.5532, 'Did not convert correctly');
 		});
 
 		it('should not except values < 0', () => {
@@ -17,13 +17,13 @@ describe('Testing of the Currency Converter', () => {
 		});
 	});
 
-	describe('convertBack() function', () => {
+	describe('convertBack()', () => {
 		it('should convert back to original currency', () => {
 			let cbtest = new Converter(0.8903);
 			let cbtestResult = cbtest.convert(45);
 			let convertBackResult = cbtest.convertBack(cbtestResult);
 
-			assert.equal(convertBackResult, '45', 'Did not convert back correctly');
+			assert.strictEqual(convertBackResult, 45, 'Did not convert back correctly');
 		});
 
 		it('should not except values < 0', () => {
