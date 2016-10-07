@@ -1,5 +1,3 @@
-/// <reference path='../typings/index.d.ts' />
-
 // export function loadAPI(url: string, callback: any): any {
 // 	let xmlhttp = new XMLHttpRequest();
 // 	xmlhttp.onreadystatechange = () => {
@@ -23,7 +21,7 @@ export function loadAPI(url: string) {
 
 		xmlhttp.onreadystatechange = () => {
 			const data = JSON.parse(xmlhttp.responseText);
-			resolve(data);
+			resolve(data());
 		};
 
 		xmlhttp.onerror = () => {
@@ -37,4 +35,6 @@ export function loadAPI(url: string) {
 	})
 
 }
+const apiTest = loadAPI('http://api.fixer.io/latest?base=EUR');
+const apiTestResult: string = apiTest['base'];
 console.log(loadAPI('http://api.fixer.io/latest?base=EUR'));

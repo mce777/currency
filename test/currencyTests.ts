@@ -37,7 +37,7 @@ describe('Testing of the Currency Converter', () => {
 	describe('loadAPI()', () => {
 		it('should retrieve data from an API', () => {
 			const apiTest = loadAPI('http://api.fixer.io/latest?base=EUR');
-			const apiTestResult = apiTest['base'];
+			const apiTestResult: string = apiTest['base'];
 
 			assert.equal(apiTestResult, 'EUR', 'Did not convert back correctly');
 		});
