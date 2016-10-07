@@ -16,12 +16,12 @@
 // }
 
 export function loadAPI(url: string) {
-	return new Promise((resolve, reject) => {
+	return new Promise<any>((resolve, reject) => {
 		const xmlhttp = new XMLHttpRequest();
 
 		xmlhttp.onreadystatechange = () => {
 			const data = JSON.parse(xmlhttp.responseText);
-			resolve(data());
+			resolve(data);
 		};
 
 		xmlhttp.onerror = () => {
@@ -33,8 +33,9 @@ export function loadAPI(url: string) {
 		xmlhttp.send();
 
 	})
-
 }
 const apiTest = loadAPI('http://api.fixer.io/latest?base=EUR');
-const apiTestResult: string = apiTest['base'];
+// const apiTestResult = apiTest['base'];
 console.log(loadAPI('http://api.fixer.io/latest?base=EUR'));
+
+
