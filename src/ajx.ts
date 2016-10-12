@@ -1,22 +1,6 @@
-// export function loadAPI(url: string, callback: any): any {
-// 	let xmlhttp = new XMLHttpRequest();
-// 	xmlhttp.onreadystatechange = () => {
-// 		let data = JSON.parse(xmlhttp.responseText);
-// 		if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-// 			try {
-// 				callback(data);
-// 			} catch (err) {
-// 				console.log(err.message + ' in ' + xmlhttp.responseText);
-// 				return;
-// 			}
-// 		}
-// 	};
-// 	xmlhttp.open('GET', url, true);
-// 	xmlhttp.send();
-// }
-
-export function loadAPI(url: string) {
-	return new Promise<any>((resolve, reject) => {
+// generic <T> used here, replaced with specific Interface later
+export function loadAPI<T>(url: string): Promise<T> {
+	return new Promise<T>((resolve: (data: T) => void, reject: (data: string) => void) => {
 		let xmlhttp: XMLHttpRequest;
 
 		try {
@@ -26,25 +10,36 @@ export function loadAPI(url: string) {
 		}
 
 		xmlhttp.onreadystatechange = () => {
-			const data = JSON.parse(xmlhttp.responseText);
-			resolve(data);
-		};
+			if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+				const data: T = JSON.parse(xmlhttp.responseText);
+				resolve(data);
+			}
 
-		xmlhttp.onerror = () => {
-			const message = 'no can haz';
-			reject(new Error(message));
+			if (xmlhttp.status && xmlhttp.status !== 200) {
+				reject(xmlhttp.response);
+			}
 		};
 
 		xmlhttp.open('GET', url, true);
 		xmlhttp.send();
 
-	})
+	});
 }
-const apiTest = loadAPI('http://api.fixer.io/latest?base=EUR');
-apiTest.then((data: any) => {
-	console.log(data['base'])
-})
 
+export interface ICurrency {
+	base: string;
+	date: string;
+	rates: {
+		[key: string]: number;
+	};
+}
 
+// remove this soon
+const baseCurrency: string = 'EUR';
+const ratesAPI = loadAPI('http://api.fixer.io/latest?base=' + baseCurrency);
+ratesAPI.then((data: ICurrency) => {
+	document.getElementById('demo2').innerHTML = '<h4>' + data.rates['USD'] + '</h4>';
 
+	document.getElementById('demo3').innerHTML = '<h2>' + data.base + '</h2>';
 
+});
