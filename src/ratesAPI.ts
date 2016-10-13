@@ -9,9 +9,3 @@ ratesAPI.then((data: ICurrency) => {
 	document.getElementById('demo3').innerHTML = '<h2>' + data.base + '</h2>';
 
 });
-
-// const apiTest = loadAPI<ICurrency>('http://api.fixer.io/latest?base=EUR');
-// apiTest.then((data: ICurrency) => {
-// 	console.log(data.base);
-// 	console.log(data.rates['AUD']);
-// });
