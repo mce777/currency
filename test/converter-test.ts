@@ -1,8 +1,7 @@
-import { ICurrency, loadAPI } from '../src/ajx';
 import { Converter } from '../src/currency';
 import { assert } from 'chai';
 
-describe('Testing of the Currency Converter', () => {
+describe('Testing the Converter', () => {
 	describe('convert()', () => {
 		it('should convert correctly', () => {
 			const ctest = new Converter(0.6642);
@@ -31,21 +30,6 @@ describe('Testing of the Currency Converter', () => {
 			const cbtest = new Converter(0.8903);
 
 			assert.throws(() => cbtest.convertBack(-10), 'Negative values are not permitted');
-		});
-	});
-
-	describe('loadAPI()', () => {
-		(global as any)['XMLHttpRequest'] = require('xmlhttprequest').XMLHttpRequest;  // tslint:disable-line
-
-		it('should make a GET request', (done: () => void) => {
-			const result: Promise<ICurrency> = loadAPI('http://api.fixer.io/latest?base=EUR');
-			result.then((data: ICurrency) => {
-				assert.equal(data.base, 'EUR', 'no work');
-				done();
-			}).catch((error: Error) => {
-				console.log(error);
-				done();
-			});
 		});
 	});
 

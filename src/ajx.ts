@@ -1,4 +1,4 @@
-// generic <T> used here, replaced with specific Interface later
+// TypeScript generic <T> used here, replaced with specific Interface later
 export function loadAPI<T>(url: string): Promise<T> {
 	return new Promise<T>((resolve: (data: T) => void, reject: (data: string) => void) => {
 		let xmlhttp: XMLHttpRequest;
@@ -12,11 +12,11 @@ export function loadAPI<T>(url: string): Promise<T> {
 		xmlhttp.onreadystatechange = () => {
 			if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 				const data: T = JSON.parse(xmlhttp.responseText);
-				resolve(data);
+				return resolve(data);
 			}
 
-			if (xmlhttp.status && xmlhttp.status !== 200) {
-				reject(xmlhttp.response);
+			if (xmlhttp.readyState === 4 && xmlhttp.status !== 200) {
+				return reject(`${xmlhttp}`);
 			}
 		};
 
@@ -25,12 +25,3 @@ export function loadAPI<T>(url: string): Promise<T> {
 
 	});
 }
-
-export interface ICurrency {
-	base: string;
-	date: string;
-	rates: {
-		[key: string]: number;
-	};
-}
-

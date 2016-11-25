@@ -1,9 +1,6 @@
-export interface ICurrency {
-	convert(amountToConvert: number): number;
-	convertBack(amountToConvert: number): number;
-}
+import { IConverter } from './interfaces';
 
-export class Converter implements ICurrency {
+export class Converter implements IConverter {
 	protected rate: number;
 	constructor(currencyRate: number) {
 		this.rate = currencyRate;
