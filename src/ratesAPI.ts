@@ -9,4 +9,3 @@ ratesAPI.then((data: ICurrency) => {
 
 	document.getElementById('demo3').innerHTML = '<h2>' + data.base + '</h2>';
 });
-
