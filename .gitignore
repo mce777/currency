@@ -4,3 +4,5 @@ node_modules
 .idea/
 /test/dist/
 /dist/
+paeckchen.cache.json
+/typings
