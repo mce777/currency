@@ -2,13 +2,12 @@ import { loadAPI } from './ajx';
 import { ICurrency } from './interfaces';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Button from 'currstyles/lib/components/atoms/button/Button';
+import Button from 'currstyles/lib/components/atoms/button/Button.jsx';
 
 const baseCurrency = 'EUR';
 
 const ratesAPI = loadAPI<ICurrency>('http://api.fixer.io/latest?base=' + baseCurrency);
 ratesAPI.then((data: ICurrency) => {
-	// document.getElementById('container').innerHTML = '<h4>' + data.rates['USD'] + '</h4>';
 
 	ReactDOM.render(
 		(

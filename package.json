@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "prebuild": "rm -fr ./dist/* && mkdir -p ./dist",
-        "build": "tsc ./src/*.ts --outDir ./dist --sourceMap --target es5 --lib es5,es6,dom,scripthost --jsx react",
+        "build": "tsc ./src/{*.ts,*.tsx} --outDir ./dist --sourceMap --target es5 --lib es5,es6,dom,scripthost --jsx react",
         "postbuild": "paeckchen -e ./dist/main.js -f ./dist/main.js --sourceMap",
         "prebuild:test": "rm -fr ./test/dist/* && mkdir -p ./test/dist",
         "build:test": "tsc ./test/*.ts --outDir ./test/dist/ --sourceMap --module commonjs --target es5 --noImplicitAny --moduleResolution node --lib es5,es6,dom,scripthost",
