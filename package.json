@@ -11,9 +11,7 @@
         "build:test": "tsc ./test/*.ts --outDir ./test/dist/ --sourceMap --module commonjs --target es5 --noImplicitAny --moduleResolution node --lib es5,es6,dom,scripthost",
         "pretest": "npm run build:test",
         "test": "mocha ./test/dist/test/index.js --verbose",
-        "posttest": "tslint -c ./tslint.json './{src,test}/**/*.ts'",
-        "styleguide-server": "styleguidist server",
-        "styleguide-build": "styleguidist build"
+        "posttest": "tslint -c ./tslint.json './{src,test}/**/*.ts'"
     },
     "author": "",
     "license": "ISC",

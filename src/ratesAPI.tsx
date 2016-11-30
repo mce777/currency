@@ -2,7 +2,7 @@ import { loadAPI } from './ajx';
 import { ICurrency } from './interfaces';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Button from 'currstyles/dist/lib/components/atoms/button/Button.js';
+import Button from 'currstyles/lib/components/atoms/button/Button';
 
 const baseCurrency = 'EUR';
 
