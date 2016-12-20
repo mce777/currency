@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+	"baseUrl": "./",
+	"outDir": "./test/dist",
+	"sourceMap": true,
+	"target": "es5",
+	"lib": [
+	  "es5", "es6", "dom", "scripthost"
+	],
+	"jsx": "react",
+	"module": "commonjs",
+	"moduleResolution": "node",
+	"listEmittedFiles": true,
+	"listFiles": true
+  },
+  "include": [
+	"./test/**/*.ts"
+  ]
+}
