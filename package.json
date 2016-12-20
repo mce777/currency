@@ -7,7 +7,7 @@
     "prebuild": "rm -fr ./dist/* && mkdir -p ./dist",
     "build": "webpack",
     "prebuild:test": "rm -fr ./test/dist/* && mkdir -p ./test/dist",
-    "build:test": "tsc ./test/*.ts --outDir ./test/dist/ --sourceMap --module commonjs --target es5 --noImplicitAny --moduleResolution node --lib es5,es6,dom,scripthost",
+    "build:test": "tsc --project ./tsconfig.tests.json",
     "pretest": "npm run build:test",
     "test": "mocha ./test/dist/test/index.js --verbose",
     "posttest": "tslint -c ./tslint.json './{src,test}/**/*.ts'"

@@ -39,7 +39,7 @@ module.exports = {
 	// dependencies, which allows browsers to cache those libraries between builds.
 
 	// ACTIVATE if loaded externally (eg referenced in your HTML file)
-	// DEACTIVATE if you want them to be part of the bundle
+	// DEACTIVATE if you want them to be part of the bundle (larger file size)
 	externals: {
 		"react": "React",
 		"react-dom": "ReactDOM"

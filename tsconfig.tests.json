@@ -10,8 +10,8 @@
 	"jsx": "react",
 	"module": "commonjs",
 	"moduleResolution": "node",
-	"listEmittedFiles": true,
-	"listFiles": true
+	"listEmittedFiles": false,
+	"listFiles": false
   },
   "include": [
 	"./test/**/*.ts"

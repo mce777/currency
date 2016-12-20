@@ -12,7 +12,7 @@ ratesAPI.then((data: ICurrency) => {
 	ReactDOM.render(
 		(
 			<div>
-				<Button type="button" value="My Button" handleClick={() => alert("button was pressed")}/>
+				<Button type="button" value="My Big Button" handleClick={() => alert("button was pressed")}/>
 			</div>
 		),
 		document.getElementById('container')
